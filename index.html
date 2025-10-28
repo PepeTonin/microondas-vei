@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuiKKKKK</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #22d3ee;
+      --btn: #1f2937;
+      --btn-hover: #374151;
+      --danger: #ef4444;
+    }
+
+    html,
+    body {
+      height: 100vh;
+      margin: 0;
+      background: radial-gradient(1200px 800px at 80% -200px, #0ea5e9 0%, transparent 40%),
+        linear-gradient(160deg, #0b1022 0%, #0f172a 50%, #0b1022 100%);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      overflow: hidden;
+    }
+
+    .container {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      box-shadow: none;
+      padding: 20px 20px 16px;
+    }
+
+    .header {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-size: 16px;
+      color: var(--muted);
+      letter-spacing: .4px;
+    }
+
+    .input-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 8px 0 16px;
+    }
+
+    .input-time {
+      width: 100%;
+      font-size: 42px;
+      text-align: center;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(15, 23, 42, 0.65);
+      color: var(--text);
+      outline: none;
+      caret-color: transparent;
+    }
+
+    .input-hint {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .key {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--btn);
+      color: var(--text);
+      font-size: 20px;
+      padding: 16px 0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.05s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .key:hover {
+      background: var(--btn-hover);
+    }
+
+    .key:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .key.alt {
+      background: #0b1220;
+      border-color: rgba(255, 255, 255, 0.12);
+      font-size: 16px;
+    }
+
+    .key.danger {
+      background: #251417;
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fecaca;
+    }
+
+    .footer {
+      margin-top: 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .start-btn {
+      appearance: none;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+      color: #052e13;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      font-size: 18px;
+      padding: 14px 0;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: none;
+      transition: transform 0.05s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .start-btn:hover {
+      filter: brightness(1.05);
+      box-shadow: none;
+    }
+
+    .start-btn:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .start-btn.stop {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: linear-gradient(180deg, #ef4444, #dc2626);
+      color: #2b0b0b;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card" role="group" aria-label="Entrada de tempo">
+      <div class="input-wrapper">
+        <input id="timeInput" class="input-time" type="text" inputmode="numeric" placeholder="00:00"
+          aria-label="Tempo em minutos e segundos" readonly>
+        <div class="input-hint">min : seg</div>
+      </div>
+      <div class="keypad" aria-label="Teclado numérico">
+        <button class="key" data-key="1">1</button>
+        <button class="key" data-key="2">2</button>
+        <button class="key" data-key="3">3</button>
+        <button class="key" data-key="4">4</button>
+        <button class="key" data-key="5">5</button>
+        <button class="key" data-key="6">6</button>
+        <button class="key" data-key="7">7</button>
+        <button class="key" data-key="8">8</button>
+        <button class="key" data-key="9">9</button>
+        <button class="key alt" data-action="clear" aria-label="Limpar">Limpar</button>
+        <button class="key" data-key="0">0</button>
+        <button class="key alt" data-action="back" aria-label="Apagar">⌫</button>
+      </div>
+      <div class="actions">
+        <button id="startBtn" class="start-btn" aria-label="Começar">Começar</button>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <script>
+    (function () {
+      const input = document.getElementById('timeInput');
+      const keypad = document.querySelector('.keypad');
+      let digits = '';
+
+      function formatMmSs(raw) {
+        const padded = raw.padStart(4, '0').slice(-4);
+        let mm = padded.slice(0, 2);
+        let ss = padded.slice(2);
+        return `${mm}:${ss}`;
+      }
+
+      function update() {
+        input.value = digits.length ? formatMmSs(digits) : '';
+      }
+
+      keypad.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof HTMLElement)) return;
+        const key = target.getAttribute('data-key');
+        const action = target.getAttribute('data-action');
+
+        if (key) {
+          if (digits.length < 4) {
+            digits += key;
+            update();
+          }
+          return;
+        }
+
+        if (action === 'back') {
+          digits = digits.slice(0, -1);
+          update();
+          return;
+        }
+
+        if (action === 'clear') {
+          digits = '';
+          update();
+          return;
+        }
+      });
+
+      update();
+
+      const startBtn = document.getElementById('startBtn');
+
+      let timerInterval = null;
+      let isRunning = false;
+      let timerTotalSeconds = 0;
+
+      function secondsToMmSs(total) {
+        const m = Math.floor(total / 60);
+        const s = total % 60;
+        return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      }
+
+      function startTicking() {
+        stopTicking();
+        timerInterval = setInterval(() => {
+          if (timerTotalSeconds <= 0) {
+            stopTicking();
+            input.value = '00:00';
+            digits = '';
+            isRunning = false;
+            startBtn.classList.remove('stop');
+            startBtn.textContent = 'Começar';
+            startBtn.setAttribute('aria-label', 'Começar');
+            alert('Mensagem genérica');
+            return;
+          }
+          timerTotalSeconds -= 1;
+          input.value = secondsToMmSs(timerTotalSeconds);
+        }, 1000);
+      }
+
+      function stopTicking() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      }
+      startBtn.addEventListener('click', () => {
+        if (isRunning) {
+          stopTicking();
+          isRunning = false;
+          digits = '';
+          input.value = '00:00';
+          startBtn.classList.remove('stop');
+          startBtn.textContent = 'Começar';
+          startBtn.setAttribute('aria-label', 'Começar');
+          return;
+        }
+
+        update();
+        const value = input.value || '00:00';
+        const [mmStr, ssStr] = value.split(':');
+        let seconds = parseInt(ssStr || '0', 10) || 0;
+        let minutes = parseInt(mmStr || '0', 10) || 0;
+        if (seconds >= 60) {
+          minutes += 1;
+          seconds = seconds - 60;
+        }
+        if (minutes > 59 || (minutes === 59 && seconds > 59)) {
+          alert('Mensagem genérica');
+          input.value = '00:00';
+          digits = '';
+          update();
+          return;
+        }
+        digits = minutes.toString().padStart(2, '0') + seconds.toString().padStart(2, '0');
+        update();
+
+        timerTotalSeconds = minutes * 60 + seconds;
+        isRunning = true;
+        startBtn.classList.add('stop');
+        startBtn.textContent = 'Parar';
+        startBtn.setAttribute('aria-label', 'Parar');
+        startTicking();
+      });
+
+      const originalKeypadHandler = keypad.onclick;
+      keypad.addEventListener('click', (e) => {
+        if (isRunning) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }, true);
+    })();
+  </script>
+</body>
+
+</html>
